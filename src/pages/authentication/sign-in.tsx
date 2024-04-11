@@ -8,6 +8,9 @@ import { login } from '@/store/slices/auth-slice';
 import { AppDispatch, RootState } from '@/store/store.ts';
 import { emailIcon, eyeIcon, googleIcon, facebookIcon } from '@/assets/images/icon';
 import AuthenticateLayout from '@/pages/authentication/authenticate-layout.tsx';
+import { AsyncThunkAction, UnknownAction } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
+import { AsyncThunkConfig } from 'node_modules/@reduxjs/toolkit/dist/createAsyncThunk';
 
 type DataType = {
     email?       : string,
@@ -19,15 +22,20 @@ type MessageType = {
     password?   : [],
 }
 
+type LoginAction = AsyncThunkAction<
+    AxiosResponse<any, any>, DataType, AsyncThunkConfig
+> | UnknownAction;
+
+
 const SignIn = () => {
     const dispatch = useDispatch<AppDispatch>();
     const authState = useSelector((state: RootState) => state.auth);
     const [data, setData] = useState<DataType>();
-    const [message, setMessage] = useState<string | MessageType>();
+    const [message, setMessage] = useState<string | MessageType | any>();
 
     useEffect(() => {
-        if (authState?.error) {
-            setMessage(authState?.error?.fields)
+        if (authState?.error && authState?.error?.fields) {
+            setMessage(authState?.error?.fields);
         }
     }, [authState]);
 
@@ -41,7 +49,7 @@ const SignIn = () => {
 
     const handleLogin = async () => {
         try {
-            const action = login(data!);
+            const action: LoginAction | any = login(data!);
             dispatch(action);
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -80,7 +88,12 @@ const SignIn = () => {
                     <span
                         className="mt-2 text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
                     >
-                        { message?.email ? message.email[0] : '' }
+                        {
+                            Array.isArray(message.email)
+                            && message.email.length > 0
+                            ? message.email.shift()
+                            : ''
+                        }
                     </span>
                 </div>
                 <div className="mt-8">
@@ -102,7 +115,12 @@ const SignIn = () => {
                     <span
                         className="mt-2 text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
                     >
-                        { message?.password ? message.password[0] : '' }
+                        {
+                            Array.isArray(message.password)
+                            && message.password.length > 0
+                            ? message.password.shift()
+                            : ''
+                        }
                     </span>
                 </div>
                 <div className="flex items-center justify-between gap-2 mt-5">

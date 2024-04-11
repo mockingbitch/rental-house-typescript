@@ -12,7 +12,9 @@ const initialState = {
         access_token : '',
         user : {}
     },
-    error : {},
+    error : {
+        fields: []
+    },
     isLoggedIn : false,
     isLoading : false
 };
