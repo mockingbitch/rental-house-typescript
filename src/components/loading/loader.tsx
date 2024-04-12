@@ -1,3 +1,4 @@
+import './loader.css';
 const Loader = () => {
     return (
         <>

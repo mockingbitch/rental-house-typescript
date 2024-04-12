@@ -3,7 +3,7 @@ import { publicRoutes, privateRoutes } from "./routes";
 import Layout from "@/layouts/layout.tsx";
 import { ThemeProvider } from "@/components/theme/theme-provider.tsx"
 import { ReactNode } from "react";
-import Loader from "@/components/loading/loader.tsx";
+// import Loader from "@/components/loading/loader.tsx";
 
 const App = (props: {
     children?: ReactNode;
@@ -12,7 +12,7 @@ const App = (props: {
     const isLoggedIn = props.isLoggedIn;
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <Loader/>
+            {/*<Loader/>*/}
             <Routes>
                 { publicRoutes.map((publicRoute, index) => {
                     const PublicLayout = publicRoute.layout || Layout;

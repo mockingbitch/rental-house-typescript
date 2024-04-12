@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { login } from '@/store/slices/auth-slice';
 import { AppDispatch, RootState } from '@/store/store.ts';
-import { emailIcon, eyeIcon, googleIcon, facebookIcon } from '@/assets/images/icon';
+import { emailIcon, eyeCloseIcon, eyeIcon, googleIcon, facebookIcon } from '@/assets/images/icon';
 import AuthenticateLayout from '@/pages/authentication/authenticate-layout.tsx';
 import { AsyncThunkAction, UnknownAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
@@ -17,7 +17,7 @@ type DataType = {
     password?    : string,
 }
 
-type MessageType = {
+type MessageValidationType = {
     email?      : [],
     password?   : [],
 }
@@ -31,11 +31,12 @@ const SignIn = () => {
     const dispatch = useDispatch<AppDispatch>();
     const authState = useSelector((state: RootState) => state.auth);
     const [data, setData] = useState<DataType>();
-    const [message, setMessage] = useState<string | MessageType | any>();
+    const [messageValidation, setMessageValidation] = useState<MessageValidationType | any>();
+    const [isPreviewPassword, setIsPreviewPassword] = useState<boolean>(true);
 
     useEffect(() => {
         if (authState?.error && authState?.error?.fields) {
-            setMessage(authState?.error?.fields);
+            setMessageValidation(authState?.error?.fields);
         }
     }, [authState]);
 
@@ -79,7 +80,7 @@ const SignIn = () => {
                         <Input
                             name="email"
                             type="text"
-                            className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none dark:bg-white"
+                            className="w-full text-sm border-b border-gray-300 px-2 py-3 outline-none dark:bg-white dark:text-black"
                             placeholder="Enter email"
                             onChange={ e => handleOnChange(e) }
                         />
@@ -89,9 +90,9 @@ const SignIn = () => {
                         className="mt-2 text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
                     >
                         {
-                            Array.isArray(message.email)
-                            && message.email.length > 0
-                            ? message.email.shift()
+                            Array.isArray(messageValidation?.email)
+                            && messageValidation?.email.length > 0
+                            ? messageValidation?.email[0]
                             : ''
                         }
                     </span>
@@ -101,13 +102,14 @@ const SignIn = () => {
                     <div className="relative flex items-center">
                         <Input
                             name="password"
-                            type="password"
-                            className="w-full text-sm border-b border-gray-300 focus:border-[#333] px-2 py-3 outline-none dark:bg-white"
+                            type={ isPreviewPassword ? 'text' : 'password' }
+                            className="w-full text-sm border-b border-gray-300 px-2 py-3 outline-none dark:bg-white dark:text-black"
                             placeholder="Enter password"
                             onChange={e => handleOnChange(e)}
                         />
                         <img
-                            src={ eyeIcon }
+                            onClick={ () => setIsPreviewPassword(!isPreviewPassword) }
+                            src={ isPreviewPassword ? eyeCloseIcon : eyeIcon }
                             className="w-[18px] h-[18px] absolute right-2 cursor-pointer"
                             alt="Eye icon"
                         />
@@ -116,9 +118,9 @@ const SignIn = () => {
                         className="mt-2 text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
                     >
                         {
-                            Array.isArray(message.password)
-                            && message.password.length > 0
-                            ? message.password.shift()
+                            Array.isArray(messageValidation?.password)
+                            && messageValidation?.password.length > 0
+                            ? messageValidation?.password[0]
                             : ''
                         }
                     </span>

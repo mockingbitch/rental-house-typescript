@@ -1,5 +1,6 @@
 export { default as emailIcon } from "./email.svg";
 export { default as eyeIcon } from "./eye.svg";
+export { default as eyeCloseIcon } from "./eyeclose.svg";
 export { default as facebookIcon } from "./facebook.svg";
 export { default as githubIcon } from "./github.svg";
 export { default as googleIcon } from "./google.svg";

@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { LoginService } from '@/services/auth-service.ts';
 import {AxiosError} from "axios";
+import Cookies from 'js-cookie';
+import {act} from "react-dom/test-utils";
 
 type DataType = {
     email?      : string,
@@ -9,7 +11,7 @@ type DataType = {
 
 const initialState = {
     user : {
-        access_token : '',
+        access_token : Cookies.get('token'),
         user : {}
     },
     error : {
@@ -53,11 +55,10 @@ const authSlide = createSlice({
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
             state.isLoading = true;
-            console.log('pending');
         })
             .addCase(login.fulfilled, (state, action) => {
-                console.log('fullfilled');
-                console.log(state, action)
+                state.user.access_token = action?.payload?.data?.token;
+                Cookies.set('token', action?.payload?.data?.token);
             }).addCase(login.rejected, (state, { payload }) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
