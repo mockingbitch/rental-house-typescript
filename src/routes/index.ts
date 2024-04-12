@@ -2,10 +2,12 @@ import Home from '@/pages/home/home.tsx';
 import NonAuthedLayout from "@/layouts/non-authed-layout.tsx";
 import SignIn from "@/pages/authentication/sign-in.tsx";
 import Dashboard from "@/pages/admin/dashboard/dashboard.tsx";
+import SignUp from "@/pages/authentication/sign-up.tsx";
 
 const publicRoutes = [
     { path: '/', component: Home, layout: NonAuthedLayout },
-    { path: '/login', component: SignIn, layout: NonAuthedLayout }
+    { path: '/sign-in', component: SignIn, layout: NonAuthedLayout },
+    { path: '/sign-up', component: SignUp, layout: NonAuthedLayout }
 ];
 
 const privateRoutes = [

@@ -11,6 +11,7 @@ import AuthenticateLayout from '@/pages/authentication/authenticate-layout.tsx';
 import { AsyncThunkAction, UnknownAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 import { AsyncThunkConfig } from 'node_modules/@reduxjs/toolkit/dist/createAsyncThunk';
+import {useTranslation} from "react-i18next";
 
 type DataType = {
     email?       : string,
@@ -28,6 +29,7 @@ type LoginAction = AsyncThunkAction<
 
 
 const SignIn = () => {
+    const { t }= useTranslation();
     const dispatch = useDispatch<AppDispatch>();
     const authState = useSelector((state: RootState) => state.auth);
     const [data, setData] = useState<DataType>();
@@ -63,25 +65,27 @@ const SignIn = () => {
         <AuthenticateLayout>
             <form onSubmit={ event => event.preventDefault() }>
                 <div className="mb-12">
-                    <h3 className="text-3xl font-extrabold dark:text-black">Sign in</h3>
+                    <h3 className="text-3xl font-extrabold dark:text-black">{ t('sign_in.sign_in') }</h3>
                     <p className="text-sm mt-4 dark:text-gray-700">
-                        Do not have an account?
+                        { t('sign_in.do_not_have_account') }
                         <Link
                             to='/register'
                             className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
                         >
-                            Register here
+                            { t('sign_in.register_here') }
                         </Link>
                     </p>
                 </div>
                 <div>
-                    <Label className="text-xs block mb-2 dark:text-black">Email</Label>
+                    <Label className="text-xs block mb-2 dark:text-black">
+                        { t('sign_in.email') }
+                    </Label>
                     <div className="relative flex items-center">
                         <Input
                             name="email"
                             type="text"
                             className="w-full text-sm border-b border-gray-300 px-2 py-3 outline-none dark:bg-white dark:text-black"
-                            placeholder="Enter email"
+                            placeholder={ t('sign_in.enter_email') }
                             onChange={ e => handleOnChange(e) }
                         />
                         <img src={ emailIcon } className="w-[18px] h-[18px] absolute right-2" alt="Email icon"/>
@@ -98,13 +102,15 @@ const SignIn = () => {
                     </span>
                 </div>
                 <div className="mt-8">
-                    <Label className="text-xs block mb-2 dark:text-black">Password</Label>
+                    <Label className="text-xs block mb-2 dark:text-black">
+                        { t('sign_in.password') }
+                    </Label>
                     <div className="relative flex items-center">
                         <Input
                             name="password"
                             type={ isPreviewPassword ? 'text' : 'password' }
                             className="w-full text-sm border-b border-gray-300 px-2 py-3 outline-none dark:bg-white dark:text-black"
-                            placeholder="Enter password"
+                            placeholder={ t('sign_in.enter_password') }
                             onChange={e => handleOnChange(e)}
                         />
                         <img
@@ -134,7 +140,7 @@ const SignIn = () => {
                             className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:text-black"
                         />
                         <Label htmlFor="remember-me" className="ml-3 block text-sm dark:text-black">
-                            Remember me
+                            { t('sign_in.remember_me') }
                         </Label>
                     </div>
                     <div>
@@ -142,7 +148,7 @@ const SignIn = () => {
                             href=""
                             className="text-blue-600 font-semibold text-sm hover:underline"
                         >
-                            Forgot Password?
+                            { t('sign_in.forgot_password') }
                         </a>
                     </div>
                 </div>
@@ -152,11 +158,11 @@ const SignIn = () => {
                         className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
                         onClick={ handleLogin }
                     >
-                        Sign in
+                        { t('sign_in.sign_in') }
                     </Button>
                 </div>
                 <p className="my-8 text-sm text-gray-400 text-center">
-                    or continue with
+                    { t('sign_in.or_continue_with') }
                 </p>
                 <div className="space-x-8 flex justify-center">
                     <span>
